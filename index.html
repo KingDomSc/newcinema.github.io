@@ -44,12 +44,37 @@
                 var match = url.match(regExp);
                 return (match && match[7].length == 11) ? match[7] : false;
             }
+            function TWParse(url) {
+                var regex = /(?:https:\/\/)?\.twitch\.tv\/(\S+)/i
+                return url.match(regex)[1]
+            }
             $(window).on('message', function ($event) {
                 let item = event.data
                 switch (item.action) {
                     case 'add':
-                        let url = YTParse(item.url)
-                        if (url) {
+                        let url = TWParse(item.url)
+                        let urltype = null
+                        if (url != null) urltype = "Twitch"
+                        if (urltype == null) url = YTParse(item.url)
+                        if (url != null) urltype = "Youtube"
+                        if (urltype == "Twitch") {
+                            if (player[item.id] != null) {
+                                player[item.id].destroy()
+                                player[item.id] = null
+                            }
+                            $(".CinamaList").css("display", "block")
+                            $(`.kingdomsc_${item.id}`).remove()
+                            $(".CinamaList").append(`<div class="CinamaObject kingdomsc_${item.id}" id='kingdomsc_${item.id}'></div>`)
+                            var options = {
+                                width: 100,
+                                height: 100,
+                                channel: url,
+                                parent: ["kingdomsc.github.io"]
+                            };
+                            var player = new Twitch.Player(`kingdomsc_${item.id}`, options)
+                            player.setVolume(0.7)
+                            player[item.id] = player
+                        } else if (urltype == "Youtube") {
                             if (player[item.id] != null) {
                                 player[item.id].destroy()
                                 player[item.id] = null
@@ -60,7 +85,7 @@
                             new YT.Player(`kingdomsc_${item.id}`, {
                                 width: '100%',
                                 height: '100%',
-                                videoId: url,
+                                videoId: youtubeurl,
                                 playerVars: {
                                     'controls': 0,
                                     'showinfo': 0,
