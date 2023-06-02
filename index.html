@@ -50,20 +50,21 @@
     <section class="CinamaList"></section>
     <script>
         $(document).ready(function () {
-            let player = [], checking = false
+            console.log("Start")
+            let player = [];
             function YTParse(url) {
                 var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
                 var match = url.match(regExp);
                 return (match && match[7].length == 11) ? match[7] : false;
             }
             function TWParse(url) {
-                var regex = /(?:https:\/\/)?\.twitch\.tv\/(\S+)/i
-                return url.match(regex)[1]
+                var regex = /(?:https:\/\/)?\.twitch\.tv\/(\S+)/i;
+                return url.match(regex)[1];
             }
             $(window).on('message', function ($event) {
                 let item = event.data
-                console.log(item)
-                switch (item.Action) {
+                console.log(item.action)
+                switch (item.action) {
                     case 'add':
                         let url = TWParse(item.url)
                         let urltype = null
@@ -123,7 +124,6 @@
                                             }
                                             $(".tablet, .CinamaList").css("display", "none")
                                             $(`.kingdomsc_${item.id}`).remove()
-                                            $.post("http://kingdomsc_cinema/updateState", JSON.stringify({ id: item.id }))
                                         }
                                     }),
                                     'onError': (function (event) {
@@ -132,38 +132,10 @@
                                             player[item.id] = null
                                         }
                                         $(`.kingdomsc_${item.id}`).remove()
-                                        $.post("http://kingdomsc_cinema/updateState", JSON.stringify({ id: item.id }))
                                     })
                                 }
                             })
                         }
-                        break
-                    case 'update':
-                        $(".CinamaObject").css("display", "none")
-                        if (!$(".CinamaList").is(':visible')) $(".CinamaList").css("display", "block")
-                        item.list.forEach((element) => {
-                            if (player[element.id] != null) {
-                                player[element.id].setVolume(element.maxVolume - Number(element.distance))
-                                if (element.distance <= 160) $(`.kingdomsc_${element.id}`).css("display", "block")
-                            }
-                        })
-                        break
-                    case 'remove':
-                        if (player[item.id] != null) {
-                            player[item.id].destroy()
-                            player[item.id] = null
-                        }
-                        $(`.kingdomsc_${item.id}`).remove()
-                        break
-                    case 'hide':
-                        $(".tablet, .CinamaList").css("display", "none")
-                        break
-                    case 'pause':
-                        if (player[item.id] != null) {
-                            player[item.id].destroy()
-                            player[item.id] = null
-                        }
-                        $(`.kingdomsc_${item.id}`).remove()
                         break
                 }
             })
