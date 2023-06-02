@@ -71,9 +71,12 @@
                     case 'add':
                         let url = TWParse(item.url)
                         let urltype = null
-                        if (url != null) urltype = "Twitch"
-                        if (urltype == null) url = YTParse(item.url)
-                        if (url != null) urltype = "Youtube"
+                        if (url != null) {
+                            urltype = "Twitch"
+                        } else {
+                            url = YTParse(item.url)
+                            if (url != null) urltype = "Youtube"
+                        }
                         if (urltype == "Twitch") {
                             try {
                                 if (player[item.id] != null) {
