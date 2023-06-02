@@ -29,6 +29,7 @@
             transform: scale(1, 1.9);
             z-index: 999 !important;
         }
+
         .About {
             position: absolute;
             top: 0;
@@ -50,7 +51,6 @@
     <section class="CinamaList"></section>
     <script>
         $(document).ready(function () {
-            console.log("Start")
             let player = [];
             function YTParse(url) {
                 var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
@@ -67,7 +67,6 @@
             }
             $(window).on('message', function ($event) {
                 let item = event.data
-                console.log(item.action)
                 switch (item.action) {
                     case 'add':
                         let url = TWParse(item.url)
@@ -75,13 +74,13 @@
                         if (url != null) urltype = "Twitch"
                         if (urltype == null) url = YTParse(item.url)
                         if (url != null) urltype = "Youtube"
-                        console.log(url)
-                        console.log(urltype)
                         if (urltype == "Twitch") {
-                            if (player[item.id] != null) {
-                                player[item.id].destroy()
-                                player[item.id] = null
-                            }
+                            try {
+                                if (player[item.id] != null) {
+                                    player[item.id].destroy()
+                                    player[item.id] = null
+                                }
+                            } catch (error) { }
                             $(".CinamaList").css("display", "block")
                             $(`.kingdomsc_${item.id}`).remove()
                             $(".CinamaList").append(`<div class="CinamaObject kingdomsc_${item.id}" id='kingdomsc_${item.id}'></div>`)
@@ -95,17 +94,19 @@
                             player.setVolume(0.7)
                             player[item.id] = player
                         } else if (urltype == "Youtube") {
-                            if (player[item.id] != null) {
-                                player[item.id].destroy()
-                                player[item.id] = null
-                            }
+                            try {
+                                if (player[item.id] != null) {
+                                    player[item.id].destroy()
+                                    player[item.id] = null
+                                }
+                            } catch (error) { }
                             $(".CinamaList").css("display", "block")
                             $(`.kingdomsc_${item.id}`).remove()
                             $(".CinamaList").append(`<div class="CinamaObject kingdomsc_${item.id}" id='kingdomsc_${item.id}'></div>`)
                             new YT.Player(`kingdomsc_${item.id}`, {
                                 width: '100%',
                                 height: '100%',
-                                videoId: youtubeurl,
+                                videoId: url,
                                 playerVars: {
                                     'controls': 0,
                                     'showinfo': 0,
@@ -122,19 +123,23 @@
                                     }),
                                     'onStateChange': (function (event) {
                                         if (event.data === 0) {
-                                            if (player[item.id] != null) {
-                                                player[item.id].destroy()
-                                                player[item.id] = null
-                                            }
+                                            try {
+                                                if (player[item.id] != null) {
+                                                    player[item.id].destroy()
+                                                    player[item.id] = null
+                                                }
+                                            } catch (error) { }
                                             $(".tablet, .CinamaList").css("display", "none")
                                             $(`.kingdomsc_${item.id}`).remove()
                                         }
                                     }),
                                     'onError': (function (event) {
-                                        if (player[item.id] != null) {
-                                            player[item.id].destroy()
-                                            player[item.id] = null
-                                        }
+                                        try {
+                                            if (player[item.id] != null) {
+                                                player[item.id].destroy()
+                                                player[item.id] = null
+                                            }
+                                        } catch (error) { }
                                         $(`.kingdomsc_${item.id}`).remove()
                                     })
                                 }
