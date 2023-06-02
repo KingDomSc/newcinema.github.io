@@ -89,8 +89,8 @@
                             $(`.kingdomsc_${item.id}`).remove()
                             $(".CinamaList").append(`<div class="CinamaObject kingdomsc_${item.id}" id='kingdomsc_${item.id}'></div>`)
                             let embed = new Twitch.Embed(`kingdomsc_${item.id}`, {
-                                width: 854,
-                                height: 480,
+                                width: '100vw',
+                                height: '100vh',
                                 channel: url,
                                 allowfullscreen: true,
                                 autoplay: true,
