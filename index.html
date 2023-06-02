@@ -1,7 +1,134 @@
-<!DOCTYPE html>
 <html>
+
+<head>
+    <style>
+        * {
+            outline: none;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            overflow: hidden;
+        }
+
+        body .CinamaList {
+            background-color: transparent;
+        }
+
+        .CinamaObject {
+            position: fixed;
+            z-index: 9999;
+            -webkit-user-select: none;
+            user-select: none;
+            width: 100%;
+            height: 100%;
+            -ms-transform: scale(1, 1.9);
+            -webkit-transform: scale(1, 1.9);
+            transform: scale(1, 1.9);
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+</head>
+
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <section class="CinamaList"></section>
+    <script>
+        $(document).ready(function () {
+            let player = [], checking = false
+            function YTParse(url) {
+                var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+                var match = url.match(regExp);
+                return (match && match[7].length == 11) ? match[7] : false;
+            }
+            $(window).on('message', function ($event) {
+                let item = event.data
+                switch (item.action) {
+                    case 'add':
+                        let url = YTParse(item.url)
+                        if (url) {
+                            if (player[item.id] != null) {
+                                player[item.id].destroy()
+                                player[item.id] = null
+                            }
+                            $(".CinamaList").css("display", "block")
+                            $(`.kingdomsc_${item.id}`).remove()
+                            $(".CinamaList").append(`<div class="CinamaObject kingdomsc_${item.id}" id='kingdomsc_${item.id}'></div>`)
+                            new YT.Player(`kingdomsc_${item.id}`, {
+                                width: '100%',
+                                height: '100%',
+                                videoId: url,
+                                playerVars: {
+                                    'controls': 0,
+                                    'showinfo': 0,
+                                    'disablekb': 1,
+                                    'rel': 0,
+                                    'cc_load_policy': 0,
+                                    'iv_load_policy': 0,
+                                },
+                                events: {
+                                    'onReady': (function (event) {
+                                        event.target.playVideo()
+                                        event.target.setVolume(item.maxVolume)
+                                        player[item.id] = event.target
+                                    }),
+                                    'onStateChange': (function (event) {
+                                        if (event.data === 0) {
+                                            if (player[item.id] != null) {
+                                                player[item.id].destroy()
+                                                player[item.id] = null
+                                            }
+                                            $(".tablet, .CinamaList").css("display", "none")
+                                            $(`.kingdomsc_${item.id}`).remove()
+                                            $.post("http://kingdomsc_cinema/updateState", JSON.stringify({ id: item.id }))
+                                        }
+                                    }),
+                                    'onError': (function (event) {
+                                        if (player[item.id] != null) {
+                                            player[item.id].destroy()
+                                            player[item.id] = null
+                                        }
+                                        $(`.kingdomsc_${item.id}`).remove()
+                                        $.post("http://kingdomsc_cinema/updateState", JSON.stringify({ id: item.id }))
+                                    })
+                                }
+                            })
+                        }
+                        break
+                    case 'update':
+                        $(".CinamaObject").css("display", "none")
+                        if (!$(".CinamaList").is(':visible')) $(".CinamaList").css("display", "block")
+                        item.list.forEach((element) => {
+                            if (player[element.id] != null) {
+                                player[element.id].setVolume(element.maxVolume - Number(element.distance))
+                                if (element.distance <= 160) $(`.kingdomsc_${element.id}`).css("display", "block")
+                            }
+                        })
+                        break
+                    case 'remove':
+                        if (player[item.id] != null) {
+                            player[item.id].destroy()
+                            player[item.id] = null
+                        }
+                        $(`.kingdomsc_${item.id}`).remove()
+                        break
+                    case 'hide':
+                        $(".tablet, .CinamaList").css("display", "none")
+                        break
+                    case 'pause':
+                        if (player[item.id] != null) {
+                            player[item.id].destroy()
+                            player[item.id] = null
+                        }
+                        $(`.kingdomsc_${item.id}`).remove()
+                        break
+                }
+            })
+        })
+    </script>
 </body>
+
 </html>
