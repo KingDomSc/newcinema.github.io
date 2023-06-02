@@ -59,7 +59,11 @@
             }
             function TWParse(url) {
                 var regex = /(?:https:\/\/)?\.twitch\.tv\/(\S+)/i;
-                return url.match(regex)[1];
+                try {
+                    return url.match(regex)[1]
+                } catch (error) {
+                    return null
+                }
             }
             $(window).on('message', function ($event) {
                 let item = event.data
