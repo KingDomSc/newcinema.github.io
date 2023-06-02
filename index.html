@@ -86,7 +86,7 @@
                             } catch (error) { }
                             $(".CinamaList").css("display", "block")
                             $(`.kingdomsc_${item.id}`).remove()
-                            $(".CinamaList").append(`<div class="CinamaObject kingdomsc_${item.id}" id='kingdomsc_${item.id}'></div>`)
+                            $(".CinamaList").append(`<div class="CinamaObject kingdomsc_${item.id}" style="background-color:red !important;" id='kingdomsc_${item.id}'></div>`)
                             let embed = new Twitch.Embed(`kingdomsc_${item.id}`, {
                                 width: '100%',
                                 height: '100%',
