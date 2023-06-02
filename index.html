@@ -57,6 +57,8 @@
                         if (url != null) urltype = "Twitch"
                         if (urltype == null) url = YTParse(item.url)
                         if (url != null) urltype = "Youtube"
+                        console.log(url)
+                        console.log(urltype)
                         if (urltype == "Twitch") {
                             if (player[item.id] != null) {
                                 player[item.id].destroy()
