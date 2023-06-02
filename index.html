@@ -27,6 +27,7 @@
             -ms-transform: scale(1, 1.9);
             -webkit-transform: scale(1, 1.9);
             transform: scale(1, 1.9);
+            z-index: 999 !important;
         }
         .About {
             position: absolute;
@@ -36,7 +37,7 @@
             height: 100%;
             background: url("https://media.discordapp.net/attachments/759003389656432641/941946471559880774/banner_Discord_copy.png");
             background-size: cover;
-            z-index: -1;
+            z-index: -1 !important;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -61,7 +62,7 @@
             }
             $(window).on('message', function ($event) {
                 let item = event.data
-                console.log(item.Action)
+                console.log(item)
                 switch (item.Action) {
                     case 'add':
                         let url = TWParse(item.url)
