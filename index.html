@@ -116,18 +116,18 @@
                             $(".CinamaList").css("display", "block")
                             $(`.kingdomsc_${item.id}`).remove()
                             $(".CinamaList").append(`<div class="twitch-embed CinamaObject kingdomsc_${item.id}" style="transform: none !important;" id='kingdomsc_${item.id}'></div>`)
-                            $('iframe').ready(function() {
-                                console.log("==================================== START FITSHING BUTTON ===================================")
-                                let btn = $($("iframe").contents()[0]).find("button")
-                                console.log(btn)
-                                // if (startWatchbtn != null) $(startWatchbtn).click()
-                            });
                             let embed = new Twitch.Embed(`kingdomsc_${item.id}`, {
                                 width: '100%',
                                 height: '100%',
                                 channel: url,
                                 allowfullscreen: true,
                                 autoplay: true,
+                            })
+                            embed.addEventListener("ready", () => {
+                                console.log("==================================== START FITSHING BUTTON ===================================")
+                                // let btn = $($("iframe").contents()[0]).find("button")
+                                // console.log(btn)
+                                // if (startWatchbtn != null) $(startWatchbtn).click()
                             })
                             embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
                                 var player = embed.getPlayer()
