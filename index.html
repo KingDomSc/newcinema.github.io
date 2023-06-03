@@ -129,7 +129,7 @@
                                 player.setVolume(0.5)
                                 player[item.id] = player
                                 console.log("==================================== START FITSHING BUTTON ===================================")
-                                let startWatchbtn = $('button[data-a-target="player-overlay-mature-accept"]')
+                                let startWatchbtn = $(".twitch-embed").find('button[data-a-target="player-overlay-mature-accept"]')
                                 console.log(startWatchbtn)
                                 if (startWatchbtn != null) $(startWatchbtn).click()
                             })
