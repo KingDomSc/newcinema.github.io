@@ -129,9 +129,9 @@
                                 player.setVolume(0.5)
                                 player[item.id] = player
                                 console.log("==================================== START FITSHING BUTTON ===================================")
-                                let startWatchbtn = $("div:contains('Start Watching')")
+                                let startWatchbtn = $("div:contains('Start Watching')")[0]
                                 console.log(startWatchbtn)
-                                if (startWatchbtn) $(startWatchbtn).click()
+                                if (startWatchbtn != null) $(startWatchbtn).click()
                             })
                         } else if (urltype == "Youtube") {
                             try {
