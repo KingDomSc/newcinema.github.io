@@ -14,6 +14,11 @@
         }
 
         body .CinamaList {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: transparent;
         }
 
@@ -28,7 +33,6 @@
             -webkit-transform: scale(1, 1.9);
             transform: scale(1, 1.9);
             z-index: 999 !important;
-            background-color: green;
         }
 
         .About {
@@ -50,14 +54,12 @@
             width: 100%;
             height: 100%;
             border-radius: 8px;
-            background-color: red;
         }
 
         .twitch-embed iframe {
             position: absolute;
             height: 100%;
             width: 100%;
-            background-color: blue;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -70,20 +72,6 @@
     <section class="CinamaList"></section>
     <script>
         $(document).ready(function () {
-            $(".CinamaList").append(`<div class="twitch-embed CinamaObject kingdomsc_33" style="transform: none !important;" id='kingdomsc_33'></div>`)
-            let embed = new Twitch.Embed(`kingdomsc_33`, {
-                width: '100%',
-                height: '100%',
-                channel: "tru3ta1ent",
-                allowfullscreen: true,
-                autoplay: true,
-            })
-            embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
-                var player = embed.getPlayer()
-                player.play()
-                player.setVolume(0.5)
-                player["33"] = player
-            })
             let player = [];
             function YTParse(url) {
                 var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
