@@ -125,8 +125,8 @@
                             })
                             embed.addEventListener("ready", () => {
                                 console.log("==================================== START FITSHING BUTTON ===================================")
-                                // let btn = $($("iframe").contents()[0]).find("button")
-                                // console.log(btn)
+                                let btn = $(this).find("button")
+                                console.log(btn)
                                 // if (startWatchbtn != null) $(startWatchbtn).click()
                             })
                             embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
