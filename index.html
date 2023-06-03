@@ -118,7 +118,8 @@
                             $(".CinamaList").append(`<div class="twitch-embed CinamaObject kingdomsc_${item.id}" style="transform: none !important;" id='kingdomsc_${item.id}'></div>`)
                             $('iframe').ready(function() {
                                 console.log("==================================== START FITSHING BUTTON ===================================")
-                                console.log($("iframe").contents())
+                                let btn = $($("iframe").contents()[0]).find("button")
+                                console.log(btn)
                                 // if (startWatchbtn != null) $(startWatchbtn).click()
                             });
                             let embed = new Twitch.Embed(`kingdomsc_${item.id}`, {
