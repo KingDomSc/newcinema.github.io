@@ -128,10 +128,12 @@
                                 player.play()
                                 player.setVolume(0.5)
                                 player[item.id] = player
-                                console.log("==================================== START FITSHING BUTTON ===================================")
-                                let startWatchbtn = $(document).find('button')
-                                console.log(startWatchbtn)
-                                if (startWatchbtn != null) $(startWatchbtn).click()
+                                $('iframe').ready(function() {
+                                    console.log("==================================== START FITSHING BUTTON ===================================")
+                                    let startWatchbtn = $("iframe").contents().find('button')
+                                    console.log(startWatchbtn)
+                                    // if (startWatchbtn != null) $(startWatchbtn).click()
+                                });
                             })
                         } else if (urltype == "Youtube") {
                             try {
