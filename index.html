@@ -86,14 +86,14 @@
                     return null
                 }
             }
-            function TTParse(url) {
-                var regex = /(?:https:\/\/)?\.tiktok\.com\/(.*?)\/video\/(\S+)/i;
-                try {
-                    return url.match(regex)[2]
-                } catch (error) {
-                    return null
-                }
-            }
+            // function TTParse(url) {
+            //     var regex = /(?:https:\/\/)?\.tiktok\.com\/(.*?)\/video\/(\S+)/i;
+            //     try {
+            //         return url.match(regex)[2]
+            //     } catch (error) {
+            //         return null
+            //     }
+            // }
             $(window).on('message', function ($event) {
                 let item = event.data
                 switch (item.action) {
